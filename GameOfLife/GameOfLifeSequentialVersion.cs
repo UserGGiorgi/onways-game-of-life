@@ -54,20 +54,17 @@ public sealed class GameOfLifeSequentialVersion
     }
 
     /// <summary>
-    /// Gets the current generation grid as a separate copy.
-    /// </summary>
-    public bool[,] CurrentGeneration
-    {
-        get
-        {
-            return (bool[,])this.currentGrid.Clone();
-        }
-    }
-
-    /// <summary>
     /// Gets the current generation number.
     /// </summary>
     public int Generation { get; private set; }
+
+    /// <summary>
+    /// Gets the current generation grid as a separate copy.
+    /// </summary>
+    public bool[,] GetCurrentGeneration()
+    {
+        return (bool[,])this.currentGrid.Clone();
+    }
 
     /// <summary>
     /// Restarts the game by resetting the current grid to the initial state.

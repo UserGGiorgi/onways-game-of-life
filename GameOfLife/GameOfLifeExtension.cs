@@ -25,7 +25,7 @@ public static class GameOfLifeExtension
 
         for (int gen = 0; gen < generations; gen++)
         {
-            var currentGrid = game.CurrentGeneration;
+            var currentGrid = game.GetCurrentGeneration();
             int rows = currentGrid.GetLength(0);
             int columns = currentGrid.GetLength(1);
 
@@ -61,13 +61,29 @@ public static class GameOfLifeExtension
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <param name="generations"/> is less than or equal to 0.</exception>
     public static async Task SimulateAsync(this GameOfLifeParallelVersion? game, int generations, TextWriter? writer, char aliveCell, char deadCell)
     {
+        ValidateSimulateAsyncParams(game, generations, writer);
+
+        // Ensure game and writer are not null before passing them to SimulateGameAsync
+        ArgumentNullException.ThrowIfNull(game);
+        ArgumentNullException.ThrowIfNull(writer);
+
+        await SimulateGameAsync(game, generations, writer, aliveCell, deadCell);
+    }
+
+    // Parameter validation method
+    private static void ValidateSimulateAsyncParams(GameOfLifeParallelVersion? game, int generations, TextWriter? writer)
+    {
         ArgumentNullException.ThrowIfNull(game);
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(generations);
+    }
 
+    // Simulation logic in its own method
+    private static async Task SimulateGameAsync(GameOfLifeParallelVersion game, int generations, TextWriter writer, char aliveCell, char deadCell)
+    {
         for (int gen = 0; gen < generations; gen++)
         {
-            var currentGrid = game.CurrentGeneration;
+            var currentGrid = game.GetCurrentGeneration();
             int rows = currentGrid.GetLength(0);
             int columns = currentGrid.GetLength(1);
 
