@@ -19,7 +19,31 @@ public static class GameOfLifeExtension
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <param name="generations"/> is less than or equal to 0.</exception>
     public static void Simulate(this GameOfLifeSequentialVersion? game, int generations, TextWriter? writer, char aliveCell, char deadCell)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(game);
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(generations);
+
+        for (int gen = 0; gen < generations; gen++)
+        {
+            var currentGrid = game.CurrentGeneration;
+            int rows = currentGrid.GetLength(0);
+            int columns = currentGrid.GetLength(1);
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    writer.Write(currentGrid[i, j] ? aliveCell : deadCell);
+                }
+
+                writer.WriteLine();
+            }
+
+            writer.WriteLine($"Generation {game.Generation}");
+            writer.WriteLine(new string('-', columns));
+
+            game.NextGeneration();
+        }
     }
 
     /// <summary>
@@ -37,6 +61,28 @@ public static class GameOfLifeExtension
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <param name="generations"/> is less than or equal to 0.</exception>
     public static async Task SimulateAsync(this GameOfLifeParallelVersion? game, int generations, TextWriter? writer, char aliveCell, char deadCell)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(game);
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(generations);
+
+        for (int gen = 0; gen < generations; gen++)
+        {
+            var currentGrid = game.CurrentGeneration;
+            int rows = currentGrid.GetLength(0);
+            int columns = currentGrid.GetLength(1);
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    await writer.WriteAsync(currentGrid[i, j] ? aliveCell : deadCell);
+                }
+
+                await writer.WriteLineAsync();
+            }
+
+            await writer.WriteLineAsync($"Generation {game.Generation}");
+            await writer.WriteLineAsync(new string('-', columns));
+        }
     }
 }
