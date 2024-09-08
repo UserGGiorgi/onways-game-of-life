@@ -24,11 +24,11 @@ public class GameOfLifeSequentialVersionTests
     public void Restart_ResetsCurrentGenerationToInitialGrid()
     {
         var game = new GameOfLifeSequentialVersion(GridRows, GridColumns);
-        var initialGrid = game.CurrentGeneration;
+        var initialGrid = game.GetCurrentGeneration();
         game.NextGeneration();
         game.NextGeneration();
         game.Restart();
-        var currentGenerationAfterRestart = game.CurrentGeneration;
+        var currentGenerationAfterRestart = game.GetCurrentGeneration();
         Assert.That(initialGrid, Is.EqualTo(currentGenerationAfterRestart));
     }
 
@@ -41,6 +41,6 @@ public class GameOfLifeSequentialVersionTests
             game.NextGeneration();
         }
 
-        return game.CurrentGeneration;
+        return game.GetCurrentGeneration();
     }
 }
